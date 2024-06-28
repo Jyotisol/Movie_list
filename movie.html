@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Detail</title>
+  <link rel="stylesheet" href="movie.css">
+</head>
+<body>
+  <h1 id="movieTitle">Movie Title</h1>
+  <div class="container3" style="width: 18rem;">
+    
+    <img id="moviePoster" src="" alt="Movie Poster"> 
+    <div class="card-body">
+      <p id="movieYear"></p>
+      <p id="moviePlot"></p>
+    </div>
+  </div>
+ 
+  
+  <script>
+    const API_KEY = "b3f0cf09";
+    const movieID = localStorage.getItem('selectedMovieID');
+
+    if (movieID) {
+      fetch(`https://www.omdbapi.com/?i=${movieID}&apikey=${API_KEY}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.Response === "True") {
+            document.getElementById('movieTitle').innerText = data.Title;
+            document.getElementById('moviePoster').src = data.Poster;
+            document.getElementById('movieYear').innerText = `Year: ${data.Year}`;
+            document.getElementById('moviePlot').innerText = `Plot: ${data.Plot}`;
+            
+          } else {
+            alert('Movie not found.');
+          }
+        })
+        .catch(error => console.error('Error fetching movie details:', error));
+    } else {
+      alert('No movie selected.');
+    }
+  </script>
+</body>
+</html>
